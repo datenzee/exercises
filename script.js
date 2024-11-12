@@ -10,6 +10,7 @@ const exercise = document.querySelector('.exercise')
 const exerciseTitle = document.querySelector('.exercise-title')
 const exerciseImage = document.querySelector('.exercise-image')
 const exerciseDone = document.querySelector('.exercise-done')
+const exerciseNext = document.querySelector('.exercise-next')
 
 let exerciseList = shuffleArray(window.exercises)
 let interval
@@ -28,6 +29,10 @@ buttonExercise.addEventListener('click', () => {
 
 exerciseDone.addEventListener('click', () => {
     closeExercise()
+})
+
+exerciseNext.addEventListener('click', () => {
+    openExercise()
 })
 
 function updateTimer(value) {
@@ -90,7 +95,6 @@ function closeExercise() {
 
 
 function getRandomExercise() {
-    console.log(exerciseList, exerciseList.length)
     if (exerciseList.length === 0) {
         exerciseList = shuffleArray(window.exercises)
     }

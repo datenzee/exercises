@@ -85,7 +85,13 @@ html, body {
     margin-bottom: 4rem;
 }
 
-.exercise .exercise-done {
+.exercise .exercise-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.exercise .exercise-buttons a {
     font-weight: 500;
     background-color: #fff;
     color: #000;
@@ -96,6 +102,6 @@ html, body {
     transition: all 0.15s;
 }
 
-.exercise .exercise-done:hover {
+.exercise .exercise-buttons a:hover {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
 }
