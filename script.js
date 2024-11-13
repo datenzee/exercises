@@ -16,11 +16,7 @@ let exerciseList = shuffleArray(window.exercises)
 let interval
 
 buttonPlay.addEventListener('click', () => {
-    if (interval) {
-        stopTimer()
-    } else {
-        startTimer()
-    }
+    startStopTimer()
 })
 
 buttonExercise.addEventListener('click', () => {
@@ -35,6 +31,30 @@ exerciseNext.addEventListener('click', () => {
     openExercise()
 })
 
+document.addEventListener('keyup', (event) => {
+    if (isExerciseOpen()) {
+        if (event.key === ' ') {
+            event.preventDefault()
+            openExercise()
+        }
+
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            closeExercise()
+        }
+    } else {
+        if (event.key === ' ') {
+            event.preventDefault()
+            startStopTimer()
+        }
+
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            openExercise()
+        }
+    }
+})
+
 function updateTimer(value) {
     timer.textContent = convertSeconds(value)
 }
@@ -45,6 +65,14 @@ function convertSeconds(seconds) {
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(remainingSeconds).padStart(2, '0');
     return `${formattedMinutes}:${formattedSeconds}`;
+}
+
+function startStopTimer() {
+    if (interval) {
+        stopTimer()
+    } else {
+        startTimer()
+    }
 }
 
 function startTimer() {
@@ -80,7 +108,6 @@ function updateBackground() {
         .catch(() => { })
 }
 
-
 function openExercise() {
     const selectedExercise = getRandomExercise();
 
@@ -94,6 +121,9 @@ function closeExercise() {
     exercise.classList.remove('visible');
 }
 
+function isExerciseOpen() {
+    return exercise.classList.contains('visible');
+}
 
 function getRandomExercise() {
     if (exerciseList.length === 0) {
