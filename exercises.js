@@ -40,34 +40,61 @@ window.exercises = [{
 }, {
     title: 'Lunge',
     image: 'lunges.png',
-},{
+}, {
     title: 'Leg stretches',
     image: 'leg-stretch.png',
-},{
+}, {
     title: 'Leg lifting',
     image: 'leg-lift.png',
-},{
+}, {
     title: 'Arms up stretch',
     image: 'arms-up-stretch.png',
-},{
+}, {
     title: 'Hip Flexor Stretch',
     image: 'Low-Back-Exercise-Hip-Flexor-Stretch.jpg',
-},{
+}, {
     title: 'Hip Extension',
     image: 'Lower-Back-Exercise-Hip-Extension-Office1.jpg',
-},{
+}, {
     title: 'Low Back Stretch',
     image: 'Lower-Back-Exercise-Office-Low-Back-Stretch.jpg',
-},{
+}, {
     title: 'Pelvic Tilt',
     image: 'Lower-Back-Exercise-Pelvic-Tilt-Office.jpg',
-},{
+}, {
     title: 'Squat Office',
     image: 'Lower-Back-Exercise-Squat-Office.jpg',
-},{
+}, {
     title: 'Arm behind back',
     image: 'arm-behind-back.png',
-},{
+}, {
     title: 'Leg Stretch in Chair',
     image: 'leg-stretch-in-chair.png',
+}, {
+    title: 'Standing Calf Raises',
+    image: 'standing-calf-raises.jpg',
+}, {
+    title: 'Standing Vertical Jump',
+    image: 'standing-vertical-jump.jpg',
+}, {
+    title: 'Cross Jacks',
+    image: 'cross-jacks.png',
+}, {
+    title: 'Skater Hop',
+    image: 'skater-hop.gif',
+}, {
+    title: 'Arms Stretch',
+    image: 'arms-stretch.webp',
+}, {
+    title: 'Fan and Fist',
+    image: 'fan-and-fist.jpg',
+}, {
+    title: 'Wrist Circles',
+    image: 'wrist-circles.jpg',
+}, {
+    title: 'Standing Knee to Chest',
+    image: 'standing-knee-to-chest.png',
+}, {
+    title: 'Tree Pose',
+    image: 'tree-pose.png',
 }]
