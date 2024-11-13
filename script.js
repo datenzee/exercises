@@ -56,6 +56,7 @@ function startTimer() {
         updateTimer(time);
         if (time === 0) {
             clearInterval(interval);
+            interval = null;
             openExercise();
             playAnnouncement();
         }
