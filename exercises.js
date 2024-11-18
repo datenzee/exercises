@@ -53,23 +53,14 @@ window.exercises = [{
     title: 'Hip Flexor Stretch',
     image: 'Low-Back-Exercise-Hip-Flexor-Stretch.jpg',
 }, {
-    title: 'Hip Extension',
-    image: 'Lower-Back-Exercise-Hip-Extension-Office1.jpg',
-}, {
     title: 'Low Back Stretch',
     image: 'Lower-Back-Exercise-Office-Low-Back-Stretch.jpg',
 }, {
     title: 'Pelvic Tilt',
     image: 'Lower-Back-Exercise-Pelvic-Tilt-Office.jpg',
 }, {
-    title: 'Squat Office',
-    image: 'Lower-Back-Exercise-Squat-Office.jpg',
-}, {
     title: 'Arm behind back',
     image: 'arm-behind-back.png',
-}, {
-    title: 'Leg Stretch in Chair',
-    image: 'leg-stretch-in-chair.png',
 }, {
     title: 'Standing Calf Raises',
     image: 'standing-calf-raises.jpg',
