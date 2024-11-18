@@ -88,4 +88,10 @@ window.exercises = [{
 }, {
     title: 'Tree Pose',
     image: 'tree-pose.png',
+}, {
+    title: 'Standing Breaststroke',
+    image: 'standing-breaststroke.png',
+}, {
+    title: 'Shoulder Rotation with Arm Elevation',
+    image: 'shoulder-rotation-with-arm-elevation.png',
 }]
