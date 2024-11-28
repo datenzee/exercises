@@ -94,4 +94,16 @@ window.exercises = [{
 }, {
     title: 'Shoulder Rotation with Arm Elevation',
     image: 'shoulder-rotation-with-arm-elevation.png',
+}, {
+    title: 'Butt Kicks',
+    image: 'buttkicks.jpg',
+}, {
+    title: 'Hip Circles',
+    image: 'hip-circles.jpg',
+}, {
+    title: 'Single-Leg Squat',
+    image: 'single-leg-squat.jpg',
+}, {
+    title: 'Standing Extensions',
+    image: 'standing-extensions.webp',
 }]
