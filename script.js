@@ -144,3 +144,19 @@ function shuffleArray(originalArray) {
 function playAnnouncement() {
     announceSound.play();
 }
+
+
+window.onload = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const video = urlParams.get('video');
+
+    if (!video) return;
+
+    const url = `https://www.youtube.com/embed/${video}`
+
+    const videoDiv = document.createElement('div')
+    videoDiv.classList.add('video')
+    videoDiv.innerHTML = `<iframe src="${url}"></iframe>`
+
+    document.body.prepend(videoDiv)
+}
