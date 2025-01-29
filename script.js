@@ -3,7 +3,9 @@ const imageQuery = 'fitness sports gym';
 const announceSound = new Audio('announce.wav');
 
 const buttonPlay = document.getElementById('button-play')
+const buttonYoutube = document.getElementById('button-youtube')
 const buttonExercise = document.getElementById('button-exercise')
+const buttonCustomVideo = document.getElementById('button-custom-video')
 const timer = document.querySelector('.timer')
 const timerWrapper = document.querySelector('.timer-wrapper')
 const exercise = document.querySelector('.exercise')
@@ -11,16 +13,33 @@ const exerciseTitle = document.querySelector('.exercise-title')
 const exerciseImage = document.querySelector('.exercise-image')
 const exerciseDone = document.querySelector('.exercise-done')
 const exerciseNext = document.querySelector('.exercise-next')
+const controlsTop = document.querySelector('.controls-top')
 
 let exerciseList = shuffleArray(window.exercises)
 let interval
+let videoDiv
 
 buttonPlay.addEventListener('click', () => {
     startStopTimer()
 })
 
+buttonYoutube.addEventListener('click', () => {
+    if (videoDiv) {
+        hideVideo()
+    } else {
+        initVideo(window.videos[window.videos.length - 1].v)
+    }
+})
+
 buttonExercise.addEventListener('click', () => {
     openExercise()
+})
+
+buttonCustomVideo.addEventListener('click', () => {
+    const videoCode = window.prompt('Enter the video code')
+    if (videoCode) {
+        initVideo(videoCode)
+    }
 })
 
 exerciseDone.addEventListener('click', () => {
@@ -145,18 +164,49 @@ function playAnnouncement() {
     announceSound.play();
 }
 
-
-window.onload = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const video = urlParams.get('video');
-
-    if (!video) return;
+function initVideo(video) {
+    if (videoDiv) {
+        videoDiv.remove()
+    } 
 
     const url = `https://www.youtube.com/embed/${video}`
-
-    const videoDiv = document.createElement('div')
+    videoDiv = document.createElement('div')
     videoDiv.classList.add('video')
     videoDiv.innerHTML = `<iframe src="${url}"></iframe>`
-
     document.body.prepend(videoDiv)
+
+    controlsTop.classList.remove('hidden')
+
+    const params = new URLSearchParams(window.location.search);
+    params.set('video', video);
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+}
+
+function hideVideo() {
+    if (videoDiv) {
+        videoDiv.remove()
+        videoDiv = null
+    }
+
+    controlsTop.classList.add('hidden')
+}
+
+function initVideoLinks() {
+    window.videos.reverse().forEach(({ icon, v }) => {
+        const button = document.createElement('a')
+        button.innerHTML = `<i class="${icon}"></i>`
+        button.addEventListener('click', () => {
+            initVideo(v)
+        })
+        controlsTop.prepend(button)
+    })
+}
+
+window.onload = () => {
+    initVideoLinks()
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const video = urlParams.get('video');
+    if (!video) return;
+    initVideo(video)
 }

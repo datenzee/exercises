@@ -38,14 +38,27 @@ html, body {
 
 .controls {
     position: fixed;
-    bottom: 0;
     width: 100%;
     color: #fff;
-    text-align: center;
-    padding: 2rem;
+    padding: 2rem 0;
     opacity: 0.3;   
     font-size: 2rem;
     transition: all 0.15s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controls.controls-bottom {
+    bottom: 0;
+}
+
+.controls.controls-top {
+    top: 0;
+}
+
+.controls.hidden {
+    display: none;
 }
 
 .controls:hover {
@@ -55,11 +68,19 @@ html, body {
 .controls a {
     transition: all 0.15s;
     margin: 0 1rem;
+
+    svg {
+        transition: all 0.15s;
+    }
 }
 
 .controls a:hover {
     cursor: pointer;
     text-shadow: 0 0 5px #fff;
+
+    svg {
+        filter: drop-shadow( 0 0 5px #fff);
+    }
 }
 
 .exercise {
