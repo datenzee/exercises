@@ -7,4 +7,7 @@ window.videos = [{
 }, {
     icon: 'fas fa-paw',
     v: 'Qg4aQUwtr5Q'
+}, {
+    icon: 'fas fa-hat-wizard',
+    v: 'Sagg08DrO5U'
 }]
