@@ -106,4 +106,34 @@ window.exercises = [{
 }, {
     title: 'Standing Extensions',
     image: 'standing-extensions.webp',
+}, {
+    title: 'Leg Circles',
+    image: 'leg-circles.jpg',
+}, {
+    title: 'Side Leg Raises',
+    image: 'side-leg-raises.jpg',
+}, {
+    title: 'Arm Front Raises',
+    image: 'arm-front-raises.jpg',
+}, {
+    title: 'Overhead Punches',
+    image: 'overhead-punches.jpg',
+}, {
+    title: 'Chest Expansion',
+    image: 'overhead-punches.jpg',
+}, {
+    title: 'Chest Stretch',
+    image: 'chest-stretch.jpg',
+}, {
+    title: 'Arm Scissors',
+    image: 'arm-scissors.webp',
+}, {
+    title: 'Knee to Elbow',
+    image: 'knee-to-elbow.jpg',
+}, {
+    title: 'Arm Circles',
+    image: 'arm-circles.png',
+}, {
+    title: 'Chest Opener',
+    image: 'chest-opener.webp',
 }]
