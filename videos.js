@@ -10,4 +10,10 @@ window.videos = [{
 }, {
     icon: 'fas fa-hat-wizard',
     v: 'Sagg08DrO5U'
+}, {
+    icon: 'fas fa-tree',
+    v: 'RzVvThhjAKw'
+}, {
+    icon: 'fas fa-location-dot',
+    v: '6UCCz_Pukd8'
 }]
