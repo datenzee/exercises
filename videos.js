@@ -14,6 +14,15 @@ window.videos = [{
     icon: 'fas fa-tree',
     v: 'RzVvThhjAKw'
 }, {
-    icon: 'fas fa-location-dot',
-    v: '6UCCz_Pukd8'
+    icon: 'fas fa-ship',
+    v: 'VnsRQvfv_g4'
+}, {
+    icon: 'fas fa-plane',
+    v: '0jUGiYZKAMg'
+}, {
+    icon: 'fas fa-train',
+    v: 'iWkGwIv20WI'
+}, {
+    icon: 'fas fa-fire',
+    v: 'aTKnkQbtyaY'
 }]
