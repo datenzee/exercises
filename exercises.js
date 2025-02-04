@@ -119,8 +119,8 @@ window.exercises = [{
     title: 'Overhead Punches',
     image: 'overhead-punches.jpg',
 }, {
-    title: 'Chest Expansion',
-    image: 'overhead-punches.jpg',
+    title: 'Chest Expansions',
+    image: 'chest-expansions.jpg',
 }, {
     title: 'Chest Stretch',
     image: 'chest-stretch.jpg',
