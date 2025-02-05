@@ -24,16 +24,12 @@ html, body {
     height: 100%;
     font-weight: 500;
     color: #fff;
-    font-size: calc(100vh * 0.3);
+    font-size: 20vw;
     text-shadow: 0 0 20px #000;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
-}
-
-.video + .timer-wrapper .timer {
-    font-size: calc(50vh * 0.3);
 }
 
 .controls {
