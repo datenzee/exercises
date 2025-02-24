@@ -14,14 +14,8 @@ window.videos = [{
     icon: 'fas fa-tree',
     v: 'RzVvThhjAKw'
 }, {
-    icon: 'fas fa-ship',
-    v: 'VnsRQvfv_g4'
-}, {
-    icon: 'fas fa-plane',
-    v: '0jUGiYZKAMg'
-}, {
-    icon: 'fas fa-train',
-    v: 'iWkGwIv20WI'
+    icon: 'fas fa-face-grin-tongue',
+    v: 'cwhLueAWItA'
 }, {
     icon: 'fas fa-fire',
     v: 'aTKnkQbtyaY'
