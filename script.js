@@ -1,10 +1,14 @@
 const defaultTime = 30 * 60;
 const imageQuery = 'fitness sports gym';
 const announceSound = new Audio('announce.wav');
+const remoteVideoDataUrl = 'https://app.fair-wizard.com/wizard-api/questionnaires/973fadf9-f21b-4e81-8d42-1dc424dac96b/documents/preview';
 
 const buttonPlay = document.getElementById('button-play')
 const buttonYoutube = document.getElementById('button-youtube')
 const buttonExercise = document.getElementById('button-exercise')
+const buttonRemoteVideo = document.getElementById('button-remote-video')
+const buttonRemoteVideoIcon = document.querySelector('#button-remote-video .icon')
+const buttonRemoteVideoLoader = document.querySelector('#button-remote-video .loader')
 const buttonCustomVideo = document.getElementById('button-custom-video')
 const timer = document.querySelector('.timer')
 const timerWrapper = document.querySelector('.timer-wrapper')
@@ -33,6 +37,10 @@ buttonYoutube.addEventListener('click', () => {
 
 buttonExercise.addEventListener('click', () => {
     openExercise()
+})
+
+buttonRemoteVideo.addEventListener('click', () => {
+    openRemoteVideo()
 })
 
 buttonCustomVideo.addEventListener('click', () => {
@@ -167,7 +175,7 @@ function playAnnouncement() {
 function initVideo(video) {
     if (videoDiv) {
         videoDiv.remove()
-    } 
+    }
 
     const url = `https://www.youtube.com/embed/${video}`
     videoDiv = document.createElement('div')
@@ -200,6 +208,62 @@ function initVideoLinks() {
         })
         controlsTop.prepend(button)
     })
+}
+
+function remoteVideoButtonLoading() {
+    buttonRemoteVideoIcon.classList.add('hidden')
+    buttonRemoteVideoLoader.classList.remove('hidden')
+    buttonRemoteVideo.disabled = true;
+}
+function remoteVideoButtonReady() {
+    buttonRemoteVideoIcon.classList.remove('hidden')
+    buttonRemoteVideoLoader.classList.add('hidden')
+    buttonRemoteVideo.disabled = false;
+}
+
+function openRemoteVideo() {
+    const fetchPreview = () => fetch(remoteVideoDataUrl).then(r => r.json())
+    const fetchPreviewData = (url) => fetch(`https://corsproxy.io/?url=${url}`).then(r => r.json())
+
+    const fetchVideo = () => {
+        fetchPreview()
+            .then(data => {
+                if (data.status) {
+                    setTimeout(fetchVideo, 1000)
+                } else {
+                    fetchPreviewData(data.url)
+                        .then(videoData => {
+                            if (videoData.video) {
+                                const videoId = getYouTubeVideoId(videoData.video);
+                                if (!videoId) {
+                                    alert('Invalid video URL. Please provide a valid YouTube video URL.');
+
+                                } else {
+                                    initVideo(videoId);
+                                }
+                            } else {
+                                alert('No video found in the remote data.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching video data:', error);
+                            alert('Failed to load remote video data.');
+                        })
+                        .finally(() => {
+                            remoteVideoButtonReady();
+                        });
+                }
+            })
+    }
+
+    remoteVideoButtonLoading();
+    fetchVideo();
+}
+
+function getYouTubeVideoId(url) {
+    const regex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
 }
 
 window.onload = () => {

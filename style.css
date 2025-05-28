@@ -53,7 +53,7 @@ html, body {
     top: 0;
 }
 
-.controls.hidden {
+.hidden {
     display: none;
 }
 
@@ -77,6 +77,10 @@ html, body {
     svg {
         filter: drop-shadow( 0 0 5px #fff);
     }
+}
+
+#button-remote-video {
+    margin-left: 3rem;
 }
 
 .exercise {
