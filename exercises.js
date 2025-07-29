@@ -136,4 +136,7 @@ window.exercises = [{
 }, {
     title: 'Chest Opener',
     image: 'chest-opener.webp',
+}, {
+    title: 'Wild Card - Do your favorite exercise',
+    image: 'wildcard.png',
 }]
