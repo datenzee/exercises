@@ -139,4 +139,7 @@ window.exercises = [{
 }, {
     title: 'Wild Card - Do your favorite exercise',
     image: 'wildcard.png',
+}, {
+    title: 'Back Stretch',
+    image: 'back-stretch.png',
 }]
