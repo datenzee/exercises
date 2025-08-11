@@ -50,7 +50,7 @@ window.exercises = [{
     title: 'Arms up stretch',
     image: 'arms-up-stretch.png',
 }, {
-    title: 'Hip Flexor Stretch',
+    title: 'Pozdrav pod stolem',
     image: 'Low-Back-Exercise-Hip-Flexor-Stretch.jpg',
 }, {
     title: 'Low Back Stretch',
@@ -89,7 +89,7 @@ window.exercises = [{
     title: 'Tree Pose',
     image: 'tree-pose.png',
 }, {
-    title: 'Standing Breaststroke',
+    title: 'Standing Swimming',
     image: 'standing-breaststroke.png',
 }, {
     title: 'Shoulder Rotation with Arm Elevation',
