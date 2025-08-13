@@ -50,10 +50,10 @@ window.exercises = [{
     title: 'Arms up stretch',
     image: 'arms-up-stretch.png',
 }, {
-    title: 'Pozdrav pod stolem',
+    title: 'Hip Flexor Stretch',
     image: 'Low-Back-Exercise-Hip-Flexor-Stretch.jpg',
 }, {
-    title: 'Low Back Stretch',
+    title: 'Pozdrav pod stolem',
     image: 'Lower-Back-Exercise-Office-Low-Back-Stretch.jpg',
 }, {
     title: 'Pelvic Tilt',
