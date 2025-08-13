@@ -148,6 +148,8 @@ function openExercise() {
     exerciseImage.style.backgroundImage = `url(images/${selectedExercise.image})`;
 
     exercise.classList.add('visible');
+
+    exerciseNext.focus();
 }
 
 function closeExercise() {
