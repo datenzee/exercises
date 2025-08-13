@@ -83,6 +83,72 @@ html, body {
     margin-left: 3rem;
 }
 
+.focus-mode {
+    --fade-start: 58%;
+    --fade-end: 100%;
+
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 20%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    color: #fff;
+    font-size: 3.5rem;
+    font-weight: bold;
+    gap: 1rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    svg {
+        filter: drop-shadow( 0 0 5px rgb(var(--c2)));
+    }
+}
+
+.focus-mode.visible {
+    display: flex;
+}
+
+.focus-mode::before {
+    content: "";
+    position: absolute;
+    opacity: 0.7;
+    inset: 0;
+    background:
+    linear-gradient(120deg, rgba(96,165,250,0.60), rgba(192,132,252,0.60), rgba(244,114,182,0.60)),
+    linear-gradient(240deg, rgba(244,114,182,0.50), rgba(96,165,250,0.50), rgba(192,132,252,0.50));
+    background-size: 200% 200%;
+    animation: wave1 20s ease-in-out infinite alternate;
+
+    /* Super-smooth feather to transparent using a multi-stop mask */
+    mask-image: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 1) 0%,                 /* fully opaque top */
+    rgb(0 0 0 / 1) var(--fade-start),  /* hold opacity until fade starts */
+    rgb(0 0 0 / 0.85) calc(var(--fade-start) + 10%),
+    rgb(0 0 0 / 0.55) calc(var(--fade-start) + 24%),
+    rgb(0 0 0 / 0.25) calc(var(--fade-start) + 34%),
+    rgb(0 0 0 / 0) var(--fade-end)     /* fully transparent bottom */
+    );
+    -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 1) var(--fade-start),
+    rgb(0 0 0 / 0.85) calc(var(--fade-start) + 10%),
+    rgb(0 0 0 / 0.55) calc(var(--fade-start) + 24%),
+    rgb(0 0 0 / 0.25) calc(var(--fade-start) + 34%),
+    rgb(0 0 0 / 0) var(--fade-end)
+    );
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    z-index: -1;
+}
+
+
 .exercise {
     position: fixed;
     left: 0;
@@ -95,6 +161,7 @@ html, body {
     justify-content: center;
     align-items: center;
     padding: 1rem;
+    z-index: 1000;
 }
 
 .exercise.visible {
@@ -146,4 +213,10 @@ html, body {
     width: 100%;
     height: 100%;
     border: 0;
+}
+
+@keyframes wave1 {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }

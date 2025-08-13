@@ -5,6 +5,7 @@ const remoteVideoDataUrl = 'https://app.fair-wizard.com/wizard-api/questionnaire
 
 const buttonPlay = document.getElementById('button-play')
 const buttonYoutube = document.getElementById('button-youtube')
+const buttonFocusMode = document.getElementById('button-focus')
 const buttonExercise = document.getElementById('button-exercise')
 const buttonRemoteVideo = document.getElementById('button-remote-video')
 const buttonRemoteVideoIcon = document.querySelector('#button-remote-video .icon')
@@ -12,6 +13,7 @@ const buttonRemoteVideoLoader = document.querySelector('#button-remote-video .lo
 const buttonCustomVideo = document.getElementById('button-custom-video')
 const timer = document.querySelector('.timer')
 const timerWrapper = document.querySelector('.timer-wrapper')
+const focusMode = document.querySelector('.focus-mode')
 const exercise = document.querySelector('.exercise')
 const exerciseTitle = document.querySelector('.exercise-title')
 const exerciseImage = document.querySelector('.exercise-image')
@@ -33,6 +35,10 @@ buttonYoutube.addEventListener('click', () => {
     } else {
         initVideo(window.videos[window.videos.length - 1].v)
     }
+})
+
+buttonFocusMode.addEventListener('click', () => {
+    focusMode.classList.toggle('visible')
 })
 
 buttonExercise.addEventListener('click', () => {
