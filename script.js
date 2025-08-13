@@ -1,6 +1,7 @@
 const defaultTime = 30 * 60;
-const imageQuery = 'fitness sports gym';
-const announceSound = new Audio('announce.wav');
+const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
+const announceSound = new Audio('audio/announce.wav');
+const focusModeSound = new Audio('audio/silence.mp3');
 const remoteVideoDataUrl = 'https://app.fair-wizard.com/wizard-api/questionnaires/973fadf9-f21b-4e81-8d42-1dc424dac96b/documents/preview';
 
 const buttonPlay = document.getElementById('button-play')
@@ -38,7 +39,7 @@ buttonYoutube.addEventListener('click', () => {
 })
 
 buttonFocusMode.addEventListener('click', () => {
-    focusMode.classList.toggle('visible')
+    toggleFocusMode()
 })
 
 buttonExercise.addEventListener('click', () => {
@@ -85,6 +86,11 @@ document.addEventListener('keyup', (event) => {
             event.preventDefault()
             openExercise()
         }
+    }
+
+    if (event.key.toLowerCase() === 'f') {
+        event.preventDefault()
+        toggleFocusMode()
     }
 })
 
@@ -139,6 +145,15 @@ function updateBackground() {
             timerWrapper.style.backgroundImage = `url(${imageUrl})`;
         })
         .catch(() => { })
+}
+
+function toggleFocusMode() {
+    if (focusMode.classList.contains('visible')) {
+        focusMode.classList.remove('visible');
+    } else {
+        focusMode.classList.add('visible');
+        focusModeSound.play();
+    }
 }
 
 function openExercise() {
