@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
 
+:root {
+    --content-height: 50vh;
+    --timer-after-content-height: 50vh;
+
+    --content-release-height: 65vh;
+    --timer-after-content-release-height: 35vh;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -9,14 +17,21 @@ html, body {
     flex-direction: column;
 }
 
+
+/* Timer */
+
 .timer-wrapper {
     width: 100vw;
     height: 100vh;
     background-size: cover;
 }
 
-.video + .timer-wrapper {
-    height: 50vh;
+.content + .timer-wrapper {
+    height: var(--timer-after-content-height);
+}
+
+.content-release + .timer-wrapper {
+    height: var(--timer-after-content-release-height);
 }
 
 .timer {
@@ -31,6 +46,9 @@ html, body {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+
+/* Controls */
 
 .controls {
     position: fixed;
@@ -51,10 +69,6 @@ html, body {
 
 .controls.controls-top {
     top: 0;
-}
-
-.hidden {
-    display: none;
 }
 
 .controls:hover {
@@ -82,6 +96,85 @@ html, body {
 #button-remote-video {
     margin-left: 3rem;
 }
+
+
+/* Exercise */
+
+.exercise {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    z-index: 1000;
+}
+
+.exercise.visible {
+    display: flex;
+}
+
+.exercise .exercise-title {
+    font-weight: 500;
+    color: #fff;
+    font-size: 3rem;
+}
+
+.exercise .exercise-image {
+    width: 80vw;
+    height: 60vh;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+.exercise .exercise-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.exercise .exercise-buttons a {
+    font-weight: 500;
+    background-color: #fff;
+    color: #000;
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 5rem;
+    padding: 0.5rem 2rem;
+    transition: all 0.15s;
+}
+
+.exercise .exercise-buttons a:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+
+/* Content */
+
+.content {
+    height: var(--content-height);
+}
+
+.content-release {
+    height: var(--content-release-height);
+}
+
+.content iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+
+/* Focus mode */
 
 .focus-mode {
     --fade-start: 58%;
@@ -148,75 +241,15 @@ html, body {
     z-index: -1;
 }
 
-
-.exercise {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: #000;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    z-index: 1000;
-}
-
-.exercise.visible {
-    display: flex;
-}
-
-.exercise .exercise-title {
-    font-weight: 500;
-    color: #fff;
-    font-size: 3rem;
-}
-
-.exercise .exercise-image {
-    width: 80vw;
-    height: 60vh;
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-    margin-top: 2rem;
-    margin-bottom: 4rem;
-}
-
-.exercise .exercise-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-
-.exercise .exercise-buttons a {
-    font-weight: 500;
-    background-color: #fff;
-    color: #000;
-    font-size: 2rem;
-    cursor: pointer;
-    border-radius: 5rem;
-    padding: 0.5rem 2rem;
-    transition: all 0.15s;
-}
-
-.exercise .exercise-buttons a:hover {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-}
-
-.video {
-    height: 50vh;
-}
-
-.video iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
-
 @keyframes wave1 {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+
+/* Utilities */
+
+.hidden {
+    display: none;
 }

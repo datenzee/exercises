@@ -1,9 +1,14 @@
+// Configuration ---
+
 const defaultTime = 30 * 60;
 const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
 const announceSound = new Audio('audio/announce.wav');
 const focusModeSound = new Audio('audio/silence.mp3');
 const remoteVideoDataUrl = 'https://app.fair-wizard.com/wizard-api/questionnaires/973fadf9-f21b-4e81-8d42-1dc424dac96b/documents/preview';
 const releaseChecklistUuid = 'db91894b-7abd-4b1a-adb6-0818f017f531';
+
+
+// Elements ---
 
 const buttonPlay = document.getElementById('button-play')
 const buttonRelease = document.getElementById('button-release')
@@ -26,37 +31,43 @@ const exerciseDone = document.querySelector('.exercise-done')
 const exerciseNext = document.querySelector('.exercise-next')
 const controlsTop = document.querySelector('.controls-top')
 
+
+// State ---
+
 let exerciseList = shuffleArray(window.exercises)
 let interval
-let videoDiv
-let videoDivType
+let contentDiv
+let contentDivType
 let releaseWebsocket
+
+
+// Event Listeners ---
 
 buttonPlay.addEventListener('click', () => {
     startStopTimer()
 })
 
 buttonRelease.addEventListener('click', () => {
-    const lastVideoDivType = videoDivType
+    const lastContentDivType = contentDivType
 
-    if (videoDiv) {
-        hideVideo()
+    if (contentDiv) {
+        hideContent()
     }
-    
-    if (lastVideoDivType !== 'release') {
+
+    if (lastContentDivType !== 'release') {
         openReleaseWebsocket()
         initReleaseChecklist()
     }
 })
 
 buttonYoutube.addEventListener('click', () => {
-    const lastVideoDivType = videoDivType
+    const lastContentDivType = contentDivType
 
-    if (videoDiv) {
-        hideVideo()
-    } 
-    
-    if (lastVideoDivType !== 'youtube') {
+    if (contentDiv) {
+        hideContent()
+    }
+
+    if (lastContentDivType !== 'youtube') {
         initVideo(window.videos[window.videos.length - 1].v)
     }
 })
@@ -117,6 +128,9 @@ document.addEventListener('keyup', (event) => {
     }
 })
 
+
+// Timer ---
+
 function updateTimer(value) {
     timer.textContent = convertSeconds(value)
 }
@@ -170,14 +184,7 @@ function updateBackground() {
         .catch(() => { })
 }
 
-function toggleFocusMode() {
-    if (focusMode.classList.contains('visible')) {
-        focusMode.classList.remove('visible');
-    } else {
-        focusMode.classList.add('visible');
-        focusModeSound.play();
-    }
-}
+// Exercise ---
 
 function openExercise() {
     const selectedExercise = getRandomExercise();
@@ -205,43 +212,18 @@ function getRandomExercise() {
     return exerciseList.shift()
 }
 
-function shuffleArray(originalArray) {
-    let array = JSON.parse(JSON.stringify(originalArray))
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
 function playAnnouncement() {
     announceSound.play();
 }
 
-function initVideo(video) {
-    if (videoDiv) {
-        videoDiv.remove()
-    }
 
-    const url = `https://www.youtube.com/embed/${video}`
-    videoDiv = document.createElement('div')
-    videoDiv.classList.add('video')
-    videoDiv.innerHTML = `<iframe src="${url}"></iframe>`
-    document.body.prepend(videoDiv)
-    videoDivType = 'youtube'
+// Content ---
 
-    controlsTop.classList.remove('hidden')
-
-    const params = new URLSearchParams(window.location.search);
-    params.set('video', video);
-    window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
-}
-
-function hideVideo() {
-    if (videoDiv) {
-        videoDiv.remove()
-        videoDiv = null
-        videoDivType = null
+function hideContent() {
+    if (contentDiv) {
+        contentDiv.remove()
+        contentDiv = null
+        contentDivType = null
     }
 
     if (releaseWebsocket) {
@@ -249,8 +231,12 @@ function hideVideo() {
         releaseWebsocket = null
     }
 
+    clearUrlParams()
     controlsTop.classList.add('hidden')
 }
+
+
+// Release Checklist ---
 
 function initReleaseChecklist(skipRemove=false) {
     releaseChecklistButtonLoading()
@@ -264,13 +250,13 @@ function initReleaseChecklist(skipRemove=false) {
                     setTimeout(fetchChecklist, 1000)
                 } else {
                     const url = data.url
-                    if (!skipRemove && !videoDiv) {
-                        videoDiv = document.createElement('div')
-                        videoDiv.classList.add('video')
-                        document.body.prepend(videoDiv)
+                    if (!skipRemove && !contentDiv) {
+                        contentDiv = document.createElement('div')
+                        contentDiv.classList.add('content', 'content-release')
+                        document.body.prepend(contentDiv)
                     }
-                    videoDiv.innerHTML = `<iframe src="${url}" style="zoom: 0.75"></iframe>`
-                    videoDivType = 'release'
+                    contentDiv.innerHTML = `<iframe src="${url}" style="zoom: 0.75"></iframe>`
+                    contentDivType = 'release'
                 }
             })
             .catch(() => {
@@ -284,28 +270,17 @@ function initReleaseChecklist(skipRemove=false) {
     fetchChecklist()
 }
 
-function openReleaseWebsocket(url) {
+function openReleaseWebsocket() {
     const wsUrl = `wss://team.fair-wizard.com/wizard-api/questionnaires/${releaseChecklistUuid}/websocket`
 
     releaseWebsocket = new WebSocket(wsUrl)
     releaseWebsocket.addEventListener('message', (event) => {
         try {
             const data = JSON.parse(event.data)
-            if (data.data.type === 'SetContent_ServerQuestionnaireAction' && videoDiv) {
+            if (data.data.type === 'SetContent_ServerQuestionnaireAction' && contentDiv) {
                 initReleaseChecklist(skipRemove=true)
             }
         } catch {}
-    })
-}
-
-function initVideoLinks() {
-    window.videos.reverse().forEach(({ icon, v }) => {
-        const button = document.createElement('a')
-        button.innerHTML = `<i class="${icon}"></i>`
-        button.addEventListener('click', () => {
-            initVideo(v)
-        })
-        controlsTop.prepend(button)
     })
 }
 
@@ -319,6 +294,37 @@ function releaseChecklistButtonReady() {
     buttonReleaseIcon.classList.remove('hidden')
     buttonReleaseLoader.classList.add('hidden')
     buttonRelease.disabled = false;
+}
+
+
+// YouTube Videos ---
+
+function initVideo(video) {
+    if (contentDiv) {
+        contentDiv.remove()
+    }
+
+    const url = `https://www.youtube.com/embed/${video}`
+    contentDiv = document.createElement('div')
+    contentDiv.classList.add('content')
+    contentDiv.innerHTML = `<iframe src="${url}"></iframe>`
+    document.body.prepend(contentDiv)
+    contentDivType = 'youtube'
+
+    controlsTop.classList.remove('hidden')
+
+    addUrlParam('video', video)
+}
+
+function initVideoLinks() {
+    window.videos.reverse().forEach(({ icon, v }) => {
+        const button = document.createElement('a')
+        button.innerHTML = `<i class="${icon}"></i>`
+        button.addEventListener('click', () => {
+            initVideo(v)
+        })
+        controlsTop.prepend(button)
+    })
 }
 
 function remoteVideoButtonLoading() {
@@ -372,11 +378,48 @@ function openRemoteVideo() {
     fetchVideo();
 }
 
+
+// Focus Mode ---
+
+function toggleFocusMode() {
+    if (focusMode.classList.contains('visible')) {
+        focusMode.classList.remove('visible');
+    } else {
+        hideContent();
+        focusMode.classList.add('visible');
+        focusModeSound.play();
+    }
+}
+
+
+// Utilities ---
+
 function getYouTubeVideoId(url) {
     const regex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
 }
+
+function shuffleArray(originalArray) {
+    let array = JSON.parse(JSON.stringify(originalArray))
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function addUrlParam(key, value) {
+    const params = new URLSearchParams(window.location.search);
+    params.set(key, value);
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+}
+
+function clearUrlParams() {
+    window.history.replaceState({}, '', window.location.pathname);
+}
+
+// Init ---
 
 window.onload = () => {
     initVideoLinks()
