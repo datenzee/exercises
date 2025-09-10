@@ -3,8 +3,12 @@ const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
 const announceSound = new Audio('audio/announce.wav');
 const focusModeSound = new Audio('audio/silence.mp3');
 const remoteVideoDataUrl = 'https://app.fair-wizard.com/wizard-api/questionnaires/973fadf9-f21b-4e81-8d42-1dc424dac96b/documents/preview';
+const releaseChecklistUrl = 'https://team.fair-wizard.com/wizard-api/questionnaires/db91894b-7abd-4b1a-adb6-0818f017f531/documents/preview';
 
 const buttonPlay = document.getElementById('button-play')
+const buttonRelease = document.getElementById('button-release')
+const buttonReleaseIcon = document.querySelector('#button-release .icon')
+const buttonReleaseLoader = document.querySelector('#button-release .loader')
 const buttonYoutube = document.getElementById('button-youtube')
 const buttonFocusMode = document.getElementById('button-focus')
 const buttonExercise = document.getElementById('button-exercise')
@@ -25,13 +29,22 @@ const controlsTop = document.querySelector('.controls-top')
 let exerciseList = shuffleArray(window.exercises)
 let interval
 let videoDiv
+let videoDivType
 
 buttonPlay.addEventListener('click', () => {
     startStopTimer()
 })
 
+buttonRelease.addEventListener('click', () => {
+    if (videoDiv && videoDivType === 'release') {
+        hideVideo()
+    } else {
+        initReleaseChecklist()
+    }
+})
+
 buttonYoutube.addEventListener('click', () => {
-    if (videoDiv) {
+    if (videoDiv && videoDivType === 'youtube') {
         hideVideo()
     } else {
         initVideo(window.videos[window.videos.length - 1].v)
@@ -205,6 +218,7 @@ function initVideo(video) {
     videoDiv.classList.add('video')
     videoDiv.innerHTML = `<iframe src="${url}"></iframe>`
     document.body.prepend(videoDiv)
+    videoDivType = 'youtube'
 
     controlsTop.classList.remove('hidden')
 
@@ -222,6 +236,41 @@ function hideVideo() {
     controlsTop.classList.add('hidden')
 }
 
+function initReleaseChecklist() {
+    if (videoDiv) {
+        controlsTop.classList.add('hidden')
+        videoDiv.remove()
+    }
+
+    releaseChecklistButtonLoading()
+
+    const fetchPreview = () => fetch(releaseChecklistUrl).then(r => r.json())
+    const fetchChecklist = () => {
+        fetchPreview()
+            .then(data => {
+                    console.log(data)
+                if (data.status) {
+                    setTimeout(fetchChecklist, 1000)
+                } else {
+                    const url = data.url
+                    videoDiv = document.createElement('div')
+                    videoDiv.classList.add('video')
+                    videoDiv.innerHTML = `<iframe src="${url}" style="zoom: 0.75"></iframe>`
+                    document.body.prepend(videoDiv)
+                    videoDivType = 'release'
+                }
+            })
+            .catch(() => {
+                alert('Failed to load release checklist.')
+            })
+            .finally(() => {
+                releaseChecklistButtonReady()
+            })
+    }
+
+    fetchChecklist()
+}
+
 function initVideoLinks() {
     window.videos.reverse().forEach(({ icon, v }) => {
         const button = document.createElement('a')
@@ -233,11 +282,24 @@ function initVideoLinks() {
     })
 }
 
+function releaseChecklistButtonLoading() {
+    buttonReleaseIcon.classList.add('hidden')
+    buttonReleaseLoader.classList.remove('hidden')
+    buttonRelease.disabled = true;
+}
+
+function releaseChecklistButtonReady() {
+    buttonReleaseIcon.classList.remove('hidden')
+    buttonReleaseLoader.classList.add('hidden')
+    buttonRelease.disabled = false;
+}
+
 function remoteVideoButtonLoading() {
     buttonRemoteVideoIcon.classList.add('hidden')
     buttonRemoteVideoLoader.classList.remove('hidden')
     buttonRemoteVideo.disabled = true;
 }
+
 function remoteVideoButtonReady() {
     buttonRemoteVideoIcon.classList.remove('hidden')
     buttonRemoteVideoLoader.classList.add('hidden')
