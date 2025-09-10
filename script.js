@@ -37,22 +37,26 @@ buttonPlay.addEventListener('click', () => {
 })
 
 buttonRelease.addEventListener('click', () => {
+    const lastVideoDivType = videoDivType
+
     if (videoDiv) {
         hideVideo()
     }
     
-    if (videoDivType !== 'release') {
+    if (lastVideoDivType !== 'release') {
         openReleaseWebsocket()
         initReleaseChecklist()
     }
 })
 
 buttonYoutube.addEventListener('click', () => {
+    const lastVideoDivType = videoDivType
+
     if (videoDiv) {
         hideVideo()
     } 
     
-    if (videoDivType !== 'youtube') {
+    if (lastVideoDivType !== 'youtube') {
         initVideo(window.videos[window.videos.length - 1].v)
     }
 })
@@ -237,6 +241,7 @@ function hideVideo() {
     if (videoDiv) {
         videoDiv.remove()
         videoDiv = null
+        videoDivType = null
     }
 
     if (releaseWebsocket) {
