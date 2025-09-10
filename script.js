@@ -3,7 +3,7 @@ const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
 const announceSound = new Audio('audio/announce.wav');
 const focusModeSound = new Audio('audio/silence.mp3');
 const remoteVideoDataUrl = 'https://app.fair-wizard.com/wizard-api/questionnaires/973fadf9-f21b-4e81-8d42-1dc424dac96b/documents/preview';
-const releaseChecklistUrl = 'https://team.fair-wizard.com/wizard-api/questionnaires/db91894b-7abd-4b1a-adb6-0818f017f531/documents/preview';
+const releaseChecklistUuid = 'db91894b-7abd-4b1a-adb6-0818f017f531';
 
 const buttonPlay = document.getElementById('button-play')
 const buttonRelease = document.getElementById('button-release')
@@ -30,23 +30,29 @@ let exerciseList = shuffleArray(window.exercises)
 let interval
 let videoDiv
 let videoDivType
+let releaseWebsocket
 
 buttonPlay.addEventListener('click', () => {
     startStopTimer()
 })
 
 buttonRelease.addEventListener('click', () => {
-    if (videoDiv && videoDivType === 'release') {
+    if (videoDiv) {
         hideVideo()
-    } else {
+    }
+    
+    if (videoDivType !== 'release') {
+        openReleaseWebsocket()
         initReleaseChecklist()
     }
 })
 
 buttonYoutube.addEventListener('click', () => {
-    if (videoDiv && videoDivType === 'youtube') {
+    if (videoDiv) {
         hideVideo()
-    } else {
+    } 
+    
+    if (videoDivType !== 'youtube') {
         initVideo(window.videos[window.videos.length - 1].v)
     }
 })
@@ -233,30 +239,32 @@ function hideVideo() {
         videoDiv = null
     }
 
+    if (releaseWebsocket) {
+        releaseWebsocket.close()
+        releaseWebsocket = null
+    }
+
     controlsTop.classList.add('hidden')
 }
 
-function initReleaseChecklist() {
-    if (videoDiv) {
-        controlsTop.classList.add('hidden')
-        videoDiv.remove()
-    }
-
+function initReleaseChecklist(skipRemove=false) {
     releaseChecklistButtonLoading()
 
+    const releaseChecklistUrl = `https://team.fair-wizard.com/wizard-api/questionnaires/${releaseChecklistUuid}/documents/preview`
     const fetchPreview = () => fetch(releaseChecklistUrl).then(r => r.json())
     const fetchChecklist = () => {
         fetchPreview()
             .then(data => {
-                    console.log(data)
                 if (data.status) {
                     setTimeout(fetchChecklist, 1000)
                 } else {
                     const url = data.url
-                    videoDiv = document.createElement('div')
-                    videoDiv.classList.add('video')
+                    if (!skipRemove && !videoDiv) {
+                        videoDiv = document.createElement('div')
+                        videoDiv.classList.add('video')
+                        document.body.prepend(videoDiv)
+                    }
                     videoDiv.innerHTML = `<iframe src="${url}" style="zoom: 0.75"></iframe>`
-                    document.body.prepend(videoDiv)
                     videoDivType = 'release'
                 }
             })
@@ -269,6 +277,20 @@ function initReleaseChecklist() {
     }
 
     fetchChecklist()
+}
+
+function openReleaseWebsocket(url) {
+    const wsUrl = `wss://team.fair-wizard.com/wizard-api/questionnaires/${releaseChecklistUuid}/websocket`
+
+    releaseWebsocket = new WebSocket(wsUrl)
+    releaseWebsocket.addEventListener('message', (event) => {
+        try {
+            const data = JSON.parse(event.data)
+            if (data.data.type === 'SetContent_ServerQuestionnaireAction' && videoDiv) {
+                initReleaseChecklist(skipRemove=true)
+            }
+        } catch {}
+    })
 }
 
 function initVideoLinks() {
