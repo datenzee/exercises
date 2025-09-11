@@ -2,10 +2,12 @@
 
 const defaultTime = 30 * 60;
 const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
+const wizard = 'team.fair-wizard.com'
+const removeVideoProjectUuid = '2d5fe6a5-f660-441f-9995-d8de79f5cf67';
+const releaseChecklistProjectUuid = 'db91894b-7abd-4b1a-adb6-0818f017f531';
+
 const announceSound = new Audio('audio/announce.wav');
 const focusModeSound = new Audio('audio/silence.mp3');
-const remoteVideoDataUrl = 'https://app.fair-wizard.com/wizard-api/questionnaires/973fadf9-f21b-4e81-8d42-1dc424dac96b/documents/preview';
-const releaseChecklistUuid = 'db91894b-7abd-4b1a-adb6-0818f017f531';
 
 
 // Elements ---
@@ -238,49 +240,40 @@ function hideContent() {
 
 // Release Checklist ---
 
-function initReleaseChecklist(skipRemove=false) {
+function initReleaseChecklist(skipRemove = false) {
     releaseChecklistButtonLoading()
 
-    const releaseChecklistUrl = `https://team.fair-wizard.com/wizard-api/questionnaires/${releaseChecklistUuid}/documents/preview`
-    const fetchPreview = () => fetch(releaseChecklistUrl).then(r => r.json())
-    const fetchChecklist = () => {
-        fetchPreview()
-            .then(data => {
-                if (data.status) {
-                    setTimeout(fetchChecklist, 1000)
-                } else {
-                    const url = data.url
-                    if (!skipRemove && !contentDiv) {
-                        contentDiv = document.createElement('div')
-                        contentDiv.classList.add('content', 'content-release')
-                        document.body.prepend(contentDiv)
-                    }
-                    contentDiv.innerHTML = `<iframe src="${url}" style="zoom: 0.75"></iframe>`
-                    contentDivType = 'release'
-                }
-            })
-            .catch(() => {
-                alert('Failed to load release checklist.')
-            })
-            .finally(() => {
-                releaseChecklistButtonReady()
-            })
-    }
+    fetchWizardPreview(releaseChecklistProjectUuid)
+        .then(data => {
+            const url = data.url
+            if (!skipRemove && !contentDiv) {
+                contentDiv = document.createElement('div')
+                contentDiv.classList.add('content', 'content-release')
+                document.body.prepend(contentDiv)
+            }
+            contentDiv.innerHTML = `<iframe src="${url}" style="zoom: 0.75"></iframe>`
+            contentDivType = 'release'
 
-    fetchChecklist()
+        })
+        .catch(() => {
+            alert('Failed to load release checklist.')
+        })
+        .finally(() => {
+            releaseChecklistButtonReady()
+        })
 }
 
 function openReleaseWebsocket() {
-    const wsUrl = `wss://team.fair-wizard.com/wizard-api/questionnaires/${releaseChecklistUuid}/websocket`
+    const wsUrl = `wss://${wizard}/wizard-api/questionnaires/${releaseChecklistProjectUuid}/websocket`
 
     releaseWebsocket = new WebSocket(wsUrl)
     releaseWebsocket.addEventListener('message', (event) => {
         try {
             const data = JSON.parse(event.data)
             if (data.data.type === 'SetContent_ServerQuestionnaireAction' && contentDiv) {
-                initReleaseChecklist(skipRemove=true)
+                initReleaseChecklist(skipRemove = true)
             }
-        } catch {}
+        } catch { }
     })
 }
 
@@ -340,42 +333,32 @@ function remoteVideoButtonReady() {
 }
 
 function openRemoteVideo() {
-    const fetchPreview = () => fetch(remoteVideoDataUrl).then(r => r.json())
     const fetchPreviewData = (url) => fetch(`https://corsproxy.io/?url=${url}`).then(r => r.json())
 
-    const fetchVideo = () => {
-        fetchPreview()
-            .then(data => {
-                if (data.status) {
-                    setTimeout(fetchVideo, 1000)
-                } else {
-                    fetchPreviewData(data.url)
-                        .then(videoData => {
-                            if (videoData.video) {
-                                const videoId = getYouTubeVideoId(videoData.video);
-                                if (!videoId) {
-                                    alert('Invalid video URL. Please provide a valid YouTube video URL.');
-
-                                } else {
-                                    initVideo(videoId);
-                                }
-                            } else {
-                                alert('No video found in the remote data.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching video data:', error);
-                            alert('Failed to load remote video data.');
-                        })
-                        .finally(() => {
-                            remoteVideoButtonReady();
-                        });
-                }
-            })
-    }
-
     remoteVideoButtonLoading();
-    fetchVideo();
+
+    fetchWizardPreview(removeVideoProjectUuid)
+        .then(data => fetchPreviewData(data.url))
+        .then(videoData => {
+            if (videoData.video) {
+                const videoId = getYouTubeVideoId(videoData.video);
+                if (!videoId) {
+                    alert('Invalid video URL. Please provide a valid YouTube video URL.');
+
+                } else {
+                    initVideo(videoId);
+                }
+            } else {
+                alert('No video found in the remote data.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching video data:', error);
+            alert('Failed to load remote video data.');
+        })
+        .finally(() => {
+            remoteVideoButtonReady();
+        });
 }
 
 
@@ -393,6 +376,28 @@ function toggleFocusMode() {
 
 
 // Utilities ---
+
+function fetchWizardPreview(projectUuid) {
+    const releaseChecklistUrl = `https://${wizard}/wizard-api/questionnaires/${projectUuid}/documents/preview`;
+
+    const fetchPreview = () => fetch(releaseChecklistUrl).then(r => r.json());
+
+    return new Promise((resolve, reject) => {
+        const fetchChecklist = () => {
+            fetchPreview()
+                .then(data => {
+                    if (data.status) {
+                        setTimeout(fetchChecklist, 1000);
+                    } else {
+                        resolve(data);
+                    }
+                })
+                .catch(err => reject(err));
+        };
+
+        fetchChecklist();
+    });
+}
 
 function getYouTubeVideoId(url) {
     const regex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;
