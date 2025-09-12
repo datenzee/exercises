@@ -5,6 +5,7 @@ const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
 const wizard = 'team.fair-wizard.com'
 const removeVideoProjectUuid = '2d5fe6a5-f660-441f-9995-d8de79f5cf67';
 const releaseChecklistProjectUuid = 'db91894b-7abd-4b1a-adb6-0818f017f531';
+const musicProjectUuid = 'cce273dc-fef5-4093-aed5-6186850cd040'
 
 const announceSound = new Audio('audio/announce.wav');
 const focusModeSound = new Audio('audio/silence.mp3');
@@ -17,6 +18,9 @@ const buttonRelease = document.getElementById('button-release')
 const buttonReleaseIcon = document.querySelector('#button-release .icon')
 const buttonReleaseLoader = document.querySelector('#button-release .loader')
 const buttonYoutube = document.getElementById('button-youtube')
+const buttonMusic = document.getElementById('button-music')
+const buttonMusicIcon = document.querySelector('#button-music .icon')
+const buttonMusicLoader = document.querySelector('#button-music .loader')
 const buttonFocusMode = document.getElementById('button-focus')
 const buttonExercise = document.getElementById('button-exercise')
 const buttonRemoteVideo = document.getElementById('button-remote-video')
@@ -71,6 +75,18 @@ buttonYoutube.addEventListener('click', () => {
 
     if (lastContentDivType !== 'youtube') {
         initVideo(window.videos[window.videos.length - 1].v)
+    }
+})
+
+buttonMusic.addEventListener('click', () => {
+    const lastContentDivType = contentDivType
+
+    if (contentDiv) {
+        hideContent()
+    }
+
+    if (lastContentDivType !== 'music') {
+        initMusic()
     }
 })
 
@@ -359,6 +375,43 @@ function openRemoteVideo() {
         .finally(() => {
             remoteVideoButtonReady();
         });
+}
+
+
+// Music ---
+
+function initMusic() {
+    musicButtonLoading()
+
+    fetchWizardPreview(musicProjectUuid)
+        .then(data => {
+            const url = data.url
+            if (!contentDiv) {
+                contentDiv = document.createElement('div')
+                contentDiv.classList.add('content')
+                document.body.prepend(contentDiv)
+            }
+            contentDiv.innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`
+            contentDivType = 'music'
+        })
+        .catch(() => {
+            alert('Failed to load music.')
+        })
+        .finally(() => {
+            musicButtonReady()
+        })
+}
+
+function musicButtonLoading() {
+    buttonMusicIcon.classList.add('hidden')
+    buttonMusicLoader.classList.remove('hidden')
+    buttonMusic.disabled = true;
+}
+
+function musicButtonReady() {
+    buttonMusicIcon.classList.remove('hidden')
+    buttonMusicLoader.classList.add('hidden')
+    buttonMusic.disabled = false;
 }
 
 
