@@ -146,14 +146,11 @@ window.exercises = [{
     title: 'Wrist Flexion and Extension (6-8 repetitions)',
     image: 'Flexeaextenze-ezgif.webp',
 }, {
-    title: 'Fingers Stretch (each finger 3 times',
+    title: 'Fingers Stretch (each finger 3 times)',
     image: 'Protazenivsechprstou-ezgif.webp',
 }, {
     title: 'Opposite Prayer Stretch (20-30 seconds)',
     image: 'Hrbetyksobe-ezgif.webp',
-}, {
-    title: 'Neck Stretch (6-8 repetitions)',
-    image: 'Neck-stretch-ezgif.webp',
 }, {
     title: 'Overhead Wrist Stretch (6-8 repetitions)',
     image: 'Protazenipredloktinadhlavou-ezgif.webp',
@@ -163,7 +160,4 @@ window.exercises = [{
 }, {
     title: 'Standing Extension with Bent Elbows',
     image: 'standing-extension-bent-elbows-1.jpg',
-}, {
-    title: 'Overhead Wrist Stretch (6-8 repetitions)',
-    image: 'Protazenipredloktinadhlavou-ezgif.webp',
 }] 
