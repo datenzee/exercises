@@ -4,7 +4,7 @@ const defaultTime = 30 * 60;
 const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
 const wizard = 'team.fair-wizard.com'
 const removeVideoProjectUuid = '2d5fe6a5-f660-441f-9995-d8de79f5cf67';
-const releaseChecklistProjectUuid = 'e4192a49-7577-4d56-beda-0d51c8d59dda';
+const releaseChecklistProjectUuid = 'c820aae0-f619-4257-890a-72a4e89629d2';
 const musicProjectUuid = 'cce273dc-fef5-4093-aed5-6186850cd040'
 
 const announceSound = new Audio('audio/announce.wav');
