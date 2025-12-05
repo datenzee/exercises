@@ -160,4 +160,10 @@ window.exercises = [{
 }, {
     title: 'Standing Extension with Bent Elbows',
     image: 'standing-extension-bent-elbows-1.jpg',
+}, {
+    title: 'Arms Stretch on Chair',
+    image: 'arms-stretch.png',
+}, {
+    title: 'Sitting Joined Hand Swing',
+    image: 'sitting-joined-hand-swing.png',
 }] 
