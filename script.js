@@ -1,14 +1,15 @@
 // Configuration ---
 
-const defaultTime = 30 * 60;
-const imageQuery = 'sports gym bouldering fitness climbing workout exercise';
+const defaultTime = 30 * 60
+const imageQuery = 'sports gym bouldering fitness climbing workout exercise'
 const wizard = 'team.fair-wizard.com'
-const removeVideoProjectUuid = '2d5fe6a5-f660-441f-9995-d8de79f5cf67';
-const releaseChecklistProjectUuid = 'd6bec176-8012-4c01-ba56-109f4cbd065e';
+const removeVideoProjectUuid = '2d5fe6a5-f660-441f-9995-d8de79f5cf67'
+const releaseChecklistProjectUuid = 'd6bec176-8012-4c01-ba56-109f4cbd065e'
 const musicProjectUuid = 'cce273dc-fef5-4093-aed5-6186850cd040'
+const linksProjectUuid = '46bbec38-6cae-4228-96ed-f79cf20fca37'
 
-const announceSound = new Audio('audio/announce.wav');
-const focusModeSound = new Audio('audio/silence.mp3');
+const announceSound = new Audio('audio/announce.wav')
+const focusModeSound = new Audio('audio/silence.mp3')
 
 
 // Elements ---
@@ -21,6 +22,9 @@ const buttonYoutube = document.getElementById('button-youtube')
 const buttonMusic = document.getElementById('button-music')
 const buttonMusicIcon = document.querySelector('#button-music .icon')
 const buttonMusicLoader = document.querySelector('#button-music .loader')
+const buttonLinks = document.getElementById('button-links')
+const buttonLinksIcon = document.querySelector('#button-links .icon')
+const buttonLinksLoader = document.querySelector('#button-links .loader')
 const buttonFocusMode = document.getElementById('button-focus')
 const buttonExercise = document.getElementById('button-exercise')
 const buttonRemoteVideo = document.getElementById('button-remote-video')
@@ -87,6 +91,18 @@ buttonMusic.addEventListener('click', () => {
 
     if (lastContentDivType !== 'music') {
         initMusic()
+    }
+})
+
+buttonLinks.addEventListener('click', () => {
+    const lastContentDivType = contentDivType
+
+    if (contentDiv) {
+        hideContent()
+    }
+
+    if (lastContentDivType !== 'links') {
+        initLinks()
     }
 })
 
@@ -415,6 +431,43 @@ function musicButtonReady() {
 }
 
 
+// Links ---
+
+function initLinks() {
+    linksButtonLoading()
+
+    fetchWizardPreview(linksProjectUuid)
+        .then(data => {
+            const url = data.url
+            if (!contentDiv) {
+                contentDiv = document.createElement('div')
+                contentDiv.classList.add('content')
+                document.body.prepend(contentDiv)
+            }
+            contentDiv.innerHTML = `<iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>`
+            contentDivType = 'links'
+        })
+        .catch(() => {
+            alert('Failed to load links.')
+        })
+        .finally(() => {
+            linksButtonReady()
+        })
+}
+
+function linksButtonLoading() {
+    buttonLinksIcon.classList.add('hidden')
+    buttonLinksLoader.classList.remove('hidden')
+    buttonLinks.disabled = true;
+}
+
+function linksButtonReady() {
+    buttonLinksIcon.classList.remove('hidden')
+    buttonLinksLoader.classList.add('hidden')
+    buttonLinks.disabled = false;
+}
+
+
 // Focus Mode ---
 
 function toggleFocusMode() {
@@ -476,6 +529,7 @@ function addUrlParam(key, value) {
 function clearUrlParams() {
     window.history.replaceState({}, '', window.location.pathname);
 }
+
 
 // Init ---
 
