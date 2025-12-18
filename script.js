@@ -4,7 +4,7 @@ const defaultTime = 30 * 60
 const imageQuery = 'sports gym bouldering fitness climbing workout exercise'
 const wizard = 'team.fair-wizard.com'
 const removeVideoProjectUuid = '2d5fe6a5-f660-441f-9995-d8de79f5cf67'
-const releaseChecklistProjectUuid = 'd6bec176-8012-4c01-ba56-109f4cbd065e'
+const releaseChecklistProjectUuid = 'cc5a874a-e26e-408f-9463-c1235f9f3fcd'
 const musicProjectUuid = 'cce273dc-fef5-4093-aed5-6186850cd040'
 const linksProjectUuid = '46bbec38-6cae-4228-96ed-f79cf20fca37'
 
