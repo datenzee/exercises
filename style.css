@@ -4,8 +4,8 @@
     --content-height: 50vh;
     --timer-after-content-height: 50vh;
 
-    --content-release-height: 75vh;
-    --timer-after-content-release-height: 25vh;
+    --content-release-height: 80vh;
+    --timer-after-content-release-height: 20vh;
 }
 
 html, body {
