@@ -4,7 +4,7 @@ const defaultTime = 30 * 60
 const imageQuery = 'sports gym bouldering fitness climbing workout exercise'
 const wizard = 'team.fair-wizard.com'
 const removeVideoProjectUuid = '2d5fe6a5-f660-441f-9995-d8de79f5cf67'
-const releaseChecklistProjectUuid = '09bb4e8b-153a-41a4-9ddc-b152e89c14f8'
+const releaseChecklistProjectUuid = '4e495d94-9e25-43d9-8426-4d8051521b7f'
 const musicProjectUuid = 'cce273dc-fef5-4093-aed5-6186850cd040'
 const linksProjectUuid = '46bbec38-6cae-4228-96ed-f79cf20fca37'
 
@@ -296,13 +296,13 @@ function initReleaseChecklist(skipRemove = false) {
 }
 
 function openReleaseWebsocket() {
-    const wsUrl = `wss://${wizard}/wizard-api/questionnaires/${releaseChecklistProjectUuid}/websocket`
+    const wsUrl = `wss://${wizard}/wizard-api/projects/${releaseChecklistProjectUuid}/websocket`
 
     releaseWebsocket = new WebSocket(wsUrl)
     releaseWebsocket.addEventListener('message', (event) => {
         try {
             const data = JSON.parse(event.data)
-            if (data.data.type === 'SetContent_ServerQuestionnaireAction' && contentDiv) {
+            if (data.data.type === 'SetContent_ClientProjectMessage' && contentDiv) {
                 initReleaseChecklist(skipRemove = true)
             }
         } catch { }
@@ -484,7 +484,7 @@ function toggleFocusMode() {
 // Utilities ---
 
 function fetchWizardPreview(projectUuid) {
-    const releaseChecklistUrl = `https://${wizard}/wizard-api/questionnaires/${projectUuid}/documents/preview`;
+    const releaseChecklistUrl = `https://${wizard}/wizard-api/projects/${projectUuid}/documents/preview`;
 
     const fetchPreview = () => fetch(releaseChecklistUrl).then(r => r.json());
 
