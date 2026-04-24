@@ -45,7 +45,9 @@ const controlsTop = document.querySelector('.controls-top')
 // State ---
 
 let exerciseList = shuffleArray(window.exercises)
-let interval
+let timerWorker
+let timerRunning = false
+let timerEndTime = 0
 let contentDiv
 let contentDivType
 let releaseWebsocket
@@ -178,7 +180,7 @@ function convertSeconds(seconds) {
 }
 
 function startStopTimer() {
-    if (interval) {
+    if (timerRunning) {
         stopTimer()
     } else {
         startTimer()
@@ -186,25 +188,38 @@ function startStopTimer() {
 }
 
 function startTimer() {
-    let time = defaultTime;
-    updateTimer(time);
+    timerEndTime = Date.now() + defaultTime * 1000;
+    timerRunning = true;
+    updateTimer(defaultTime);
     updateBackground();
-    interval = setInterval(() => {
-        time--;
-        updateTimer(time);
-        if (time === 0) {
-            clearInterval(interval);
-            interval = null;
-            openExercise();
-            playAnnouncement();
-        }
-    }, 1000);
+    ensureTimerWorker();
+    timerWorker.postMessage('start');
 }
 
 function stopTimer() {
-    if (interval) {
-        clearInterval(interval);
-        interval = null;
+    if (!timerRunning) return;
+    timerRunning = false;
+    if (timerWorker) {
+        timerWorker.postMessage('stop');
+    }
+}
+
+function ensureTimerWorker() {
+    if (timerWorker) return;
+    timerWorker = new Worker('timer-worker.js');
+    timerWorker.onmessage = onTimerTick;
+}
+
+function onTimerTick() {
+    if (!timerRunning) return;
+
+    const remaining = Math.max(0, Math.round((timerEndTime - Date.now()) / 1000));
+    updateTimer(remaining);
+
+    if (remaining <= 0) {
+        stopTimer();
+        openExercise();
+        playAnnouncement();
     }
 }
 
