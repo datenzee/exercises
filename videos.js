@@ -7,4 +7,7 @@ window.videos = [{
 }, {
     icon: 'fas fa-tree',
     v: 'RzVvThhjAKw'
+}, {
+    icon: 'fab fa-bilibili',
+    v: 'ec0tHV6JA8c'
 }]
